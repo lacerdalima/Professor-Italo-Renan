@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Salário Líquido - Professores de Fortaleza 2026</title>
+    <style>
+        :root {
+            --primary: #bb86fc;
+            --secondary: #03dac6;
+            --accent: #3700b3;
+            --success: #03dac6;
+            --warning: #ffb74d;
+            --danger: #cf6679;
+            --dark-bg: #121212;
+            --dark-surface: #1e1e1e;
+            --dark-surface2: #2d2d2d;
+            --light-text: #e1e1e1;
+            --gray-text: #a0a0a0;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: var(--light-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .developer-credit {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100;
+        }
+        
+        header {
+            background: var(--dark-surface);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-left: 6px solid var(--primary);
+            border: 1px solid #333;
+            margin-top: 40px;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: var(--gray-text);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: var(--dark-surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: fit-content;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #333;
+        }
+        
+        .card-icon {
+            background: var(--primary);
+            color: var(--dark-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .card-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        
+        .input-label i {
+            color: var(--secondary);
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .info-text {
+            font-size: 0.85rem;
+            color: var(--gray-text);
+            margin-top: 0.25rem;
+            display: block;
+            line-height: 1.4;
+        }
+        
+        select, input[type="number"] {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #444;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: var(--dark-surface2);
+            color: var(--light-text);
+        }
+        
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.1);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border: 2px solid #444;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: var(--dark-surface2);
+        }
+        
+        .radio-option:hover {
+            border-color: var(--primary);
+            background: rgba(187, 134, 252, 0.1);
+        }
+        
+        .radio-option input {
+            width: auto;
+            margin-right: 0.5rem;
+            accent-color: var(--primary);
+        }
+        
+        .radio-option label {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--light-text);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #9c64ff);
+            color: var(--dark-bg);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #9c64ff, var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(187, 134, 252, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .salary-table-container {
+            background: var(--dark-surface2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border: 1px solid #333;
+        }
+        
+        .salary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .salary-table th {
+            background: var(--primary);
+            color: var(--dark-bg);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .salary-table td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #444;
+            color: var(--light-text);
+        }
+        
+        .salary-table tr:nth-child(even) {
+            background: rgba(187, 134, 252, 0.05);
+        }
+        
+        .salary-table tr:hover {
+            background: rgba(187, 134, 252, 0.1);
+        }
+        
+        .result-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .result-category {
+            background: var(--dark-surface);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid;
+            border: 1px solid #333;
+        }
+        
+        .category-vantagens {
+            border-left-color: var(--success);
+        }
+        
+        .category-descontos {
+            border-left-color: var(--danger);
+        }
+        
+        .category-total {
+            border-left-color: var(--primary);
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 500;
+            color: var(--light-text);
+        }
+        
+        .result-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .vantagem-value {
+            color: var(--success);
+        }
+        
+        .desconto-value {
+            color: var(--danger);
+        }
+        
+        .total-row {
+            background: linear-gradient(135deg, #1a3a1a, #1e4c1e);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid #2a5d2a;
+        }
+        
+        .total-label {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light-text);
+        }
+        
+        .total-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--success);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .explanation {
+            background: var(--dark-surface);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            border: 1px solid #333;
+        }
+        
+        .explanation h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .formula-box {
+            background: var(--dark-surface2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            border: 1px solid #333;
+        }
+        
+        .formula-box h4 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            color: var(--light-text);
+            border: 1px solid #333;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .value-preview {
+            background: rgba(187, 134, 252, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            display: none;
+            border: 1px solid rgba(187, 134, 252, 0.2);
+        }
+        
+        .hourly-note {
+            background: rgba(255, 183, 77, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--warning);
+            border: 1px solid rgba(255, 183, 77, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: var(--gray-text);
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-note {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            color: #666;
+        }
+        
+        .professor-type-selector {
+            background: var(--dark-surface2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #333;
+        }
+        
+        .type-selector-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .type-option {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #444;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--dark-surface);
+        }
+        
+        .type-option:hover {
+            border-color: var(--primary);
+            background: rgba(187, 134, 252, 0.1);
+        }
+        
+        .type-option.active {
+            border-color: var(--primary);
+            background: rgba(187, 134, 252, 0.2);
+            box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.1);
+        }
+        
+        .type-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .type-label {
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        
+        .type-description {
+            font-size: 0.85rem;
+            color: var(--gray-text);
+            margin-top: 0.5rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* Seletor de ano de ingresso para efetivos */
+        .ingresso-group {
+            background: var(--dark-surface2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #333;
+        }
+        
+        .ingresso-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .ingresso-option {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #444;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--dark-surface);
+        }
+        
+        .ingresso-option:hover {
+            border-color: var(--primary);
+            background: rgba(187, 134, 252, 0.1);
+        }
+        
+        .ingresso-option.active {
+            border-color: var(--primary);
+            background: rgba(187, 134, 252, 0.2);
+            box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.1);
+        }
+        
+        .ingresso-option i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .ingresso-label {
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        
+        .ingresso-description {
+            font-size: 0.85rem;
+            color: var(--gray-text);
+            margin-top: 0.5rem;
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9c64ff;
+        }
+        
+        .restriction-note {
+            background: rgba(207, 102, 121, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--danger);
+            border: 1px solid rgba(207, 102, 121, 0.2);
+        }
+        
+        .anuênio-note {
+            background: rgba(3, 218, 198, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--secondary);
+            border: 1px solid rgba(3, 218, 198, 0.2);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="developer-credit">Professor Ítalo Renan</div>
+        
+        <header>
+            <h1><i class="fas fa-calculator"></i> Calculadora de Salário Líquido</h1>
+            <p class="subtitle">Professores da Prefeitura Municipal de Fortaleza • Exercício 2026</p>
+            <p style="color: var(--secondary); margin-top: 0.5rem; font-weight: 500;">
+                Calcule seu salário considerando horas trabalhadas, nível e descontos
+            </p>
+        </header>
+        
+        <!-- Seletor de Tipo de Professor -->
+        <div class="professor-type-selector">
+            <div class="input-label">
+                <i class="fas fa-user-tie"></i>
+                Selecione o Tipo de Professor
+            </div>
+            <div class="type-selector-group">
+                <div class="type-option active" data-type="efetivo">
+                    <i class="fas fa-user-check"></i>
+                    <div class="type-label">Professor Efetivo</div>
+                    <div class="type-description">Com regência e nível progressivo</div>
+                </div>
+                <div class="type-option" data-type="substituto">
+                    <i class="fas fa-user-clock"></i>
+                    <div class="type-label">Professor Substituto</div>
+                    <div class="type-description">Somente Graduação com regência inclusa</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seletor de Ano de Ingresso (apenas para efetivos) -->
+        <div class="ingresso-group" id="ingresso-group">
+            <div class="input-label">
+                <i class="fas fa-calendar-alt"></i>
+                Ano de Ingresso (Professores Efetivos)
+            </div>
+            <div class="ingresso-options">
+                <div class="ingresso-option active" data-ingresso="2022">
+                    <i class="fas fa-calendar-plus"></i>
+                    <div class="ingresso-label">2022 ou após</div>
+                    <div class="ingresso-description">Sem anuênio</div>
+                </div>
+                <div class="ingresso-option" data-ingresso="antes-2022">
+                    <i class="fas fa-calendar-minus"></i>
+                    <div class="ingresso-label">Antes de 2022</div>
+                    <div class="ingresso-description">Com anuênio (1% por ano)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="calculator-grid">
+            <!-- Coluna de Entrada de Dados -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h2 class="card-title">Dados do Professor</h2>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-graduation-cap"></i>
+                        Qualificação Acadêmica
+                    </label>
+                    <select id="qualificacao">
+                        <option value="5144.12">Ensino Médio - R$ 5.144,12 (200h)</option>
+                        <option value="6231.34">Graduação - R$ 6.231,34 (200h)</option>
+                        <option value="7774.83" selected>Especialização - R$ 7.774,83 (200h)</option>
+                        <option value="9369.92">Mestrado - R$ 9.369,92 (200h)</option>
+                        <option value="10893.88">Doutorado - R$ 10.893,88 (200h)</option>
+                    </select>
+                    <span class="info-text">Valores base para 200 horas mensais</span>
+                </div>
+                
+                <!-- Nota de restrição para substitutos -->
+                <div class="restriction-note hidden" id="substituto-restricao">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Nota para Substituto:</strong> Somente Graduação. O valor base já inclui a regência de 14,5%.
+                </div>
+                
+                <!-- Campo de anuênio (apenas para efetivos antes de 2022) -->
+                <div class="input-group hidden" id="anuenio-group">
+                    <label class="input-label">
+                        <i class="fas fa-history"></i>
+                        Anos de Efetivo Exercício (Anuênio)
+                    </label>
+                    <input type="number" id="anuenio" min="0" max="50" value="5">
+                    <span class="info-text">1% do valor base por ano de serviço (máximo 50 anos)</span>
+                    <div class="anuênio-note">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Anuênio:</strong> 1% do valor base por ano de serviço efetivo na Prefeitura.
+                        Exemplo: 5 anos = 5% do valor base.
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-clock"></i>
+                        Quantidade de Horas Mensais
+                    </label>
+                    <input type="number" id="horas" min="1" max="400" value="200" step="1">
+                    <span class="info-text">O valor base será proporcional às horas informadas</span>
+                    <div id="horas-preview" class="value-preview"></div>
+                </div>
+                
+                <!-- Nível (apenas para efetivos) -->
+                <div class="input-group" id="nivel-group">
+                    <label class="input-label">
+                        <i class="fas fa-chart-line"></i>
+                        Nível de Referência (1-32)
+                    </label>
+                    <input type="number" id="nivel" min="1" max="32" value="1">
+                    <span class="info-text">Cada nível aumenta 2% em relação ao anterior</span>
+                    <div id="nivel-error" class="error-message">O nível deve estar entre 1 e 32</div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-utensils"></i>
+                        Dias de ADI (Auxílio Alimentação)
+                    </label>
+                    <input type="number" id="adi" min="0" max="31" value="20">
+                    <span class="info-text">Valor por dia: R$ 18,48</span>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-handshake"></i>
+                        Contribuição Sindical
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="sindicato-sim" name="sindicato" value="sim" checked>
+                            <label for="sindicato-sim">Sim (1% do valor base)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="sindicato-nao" name="sindicato" value="nao">
+                            <label for="sindicato-nao">Não</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" onclick="calcularSalario()">
+                    <i class="fas fa-calculator"></i>
+                    Calcular Salário Líquido
+                </button>
+                
+                <div class="hourly-note">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Nota sobre horas:</strong> Os valores são proporcionais. 100 horas = 50% do valor base, 200 horas = 100% do valor base.
+                </div>
+                
+                <!-- Tabela para Efetivos -->
+                <div class="salary-table-container" id="tabela-efetivos">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Valores Base para 200 horas (Efetivos)</h3>
+                    <table class="salary-table">
+                        <thead>
+                            <tr>
+                                <th>Qualificação</th>
+                                <th>Valor Base</th>
+                                <th>+ Regência (14,5%)</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Ensino Médio</td><td>R$ 5.144,12</td><td>R$ 745,90</td><td>R$ 5.890,02</td></tr>
+                            <tr><td>Graduação</td><td>R$ 6.231,34</td><td>R$ 903,54</td><td>R$ 7.134,88</td></tr>
+                            <tr><td>Especialização</td><td>R$ 7.774,83</td><td>R$ 1.127,35</td><td>R$ 8.902,18</td></tr>
+                            <tr><td>Mestrado</td><td>R$ 9.369,92</td><td>R$ 1.358,64</td><td>R$ 10.728,56</td></tr>
+                            <tr><td>Doutorado</td><td>R$ 10.893,88</td><td>R$ 1.579,61</td><td>R$ 12.473,49</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Tabela para Substitutos -->
+                <div class="salary-table-container hidden" id="tabela-substitutos">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Valor Base para 200 horas (Substitutos)</h3>
+                    <table class="salary-table">
+                        <thead>
+                            <tr>
+                                <th>Qualificação</th>
+                                <th>Valor Base</th>
+                                <th>Detalhamento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Graduação</td>
+                                <td>R$ 7.134,88</td>
+                                <td>R$ 6.231,34 + 14,5% = R$ 7.134,88</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Coluna de Resultados -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h2 class="card-title">Resultado do Cálculo</h2>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-category category-vantagens">
+                        <h3 style="color: var(--success); margin-bottom: 1rem;">
+                            <i class="fas fa-plus-circle"></i> Vantagens
+                        </h3>
+                        
+                        <div class="result-row">
+                            <span class="result-label">Valor Base</span>
+                            <span class="result-value vantagem-value" id="valor-base">R$ 7.774,83</span>
+                        </div>
+                        
+                        <!-- Regência (apenas para efetivos, não mostra para substitutos) -->
+                        <div class="result-row" id="regencia-row">
+                            <span class="result-label">Regência (14,5%)</span>
+                            <span class="result-value vantagem-value" id="regencia">R$ 1.127,35</span>
+                        </div>
+                        
+                        <!-- Anuênio (apenas para efetivos antes de 2022) -->
+                        <div class="result-row hidden" id="anuenio-row">
+                            <span class="result-label">Anuênio (<span id="anuenio-anos">5</span> anos)</span>
+                            <span class="result-value vantagem-value" id="anuenio-valor">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="result-row">
+                            <span class="result-label">ADI (<span id="dias-adi">20</span> dias × R$ 18,48)</span>
+                            <span class="result-value vantagem-value" id="adi-valor">R$ 369,60</span>
+                        </div>
+                        
+                        <div class="result-row" style="border-top: 2px solid var(--success); padding-top: 1rem;">
+                            <span class="result-label" style="font-weight: 700;">Total de Vantagens</span>
+                            <span class="result-value" style="color: var(--success); font-size: 1.3rem; font-weight: 700;" id="vantagens-total">R$ 9.271,78</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-category category-descontos">
+                        <h3 style="color: var(--danger); margin-bottom: 1rem;">
+                            <i class="fas fa-minus-circle"></i> Descontos
+                        </h3>
+                        
+                        <!-- INSS (apenas para substitutos) -->
+                        <div class="result-row hidden" id="inss-row">
+                            <span class="result-label">INSS Progressivo</span>
+                            <span class="result-value desconto-value" id="inss">R$ 0,00</span>
+                        </div>
+                        
+                        <!-- PREVIFOR (apenas para efetivos) -->
+                        <div class="result-row" id="previdencia-row">
+                            <span class="result-label">IPM PREVIFOR - PRE (14%)</span>
+                            <span class="result-value desconto-value" id="previdencia">R$ 1.186,58</span>
+                        </div>
+                        
+                        <!-- FORTALEZA SAÚDE (apenas para efetivos) -->
+                        <div class="result-row" id="saude-row">
+                            <span class="result-label">FORTALEZA SAÚDE (2%)</span>
+                            <span class="result-value desconto-value" id="saude">R$ 169,63</span>
+                        </div>
+                        
+                        <div class="result-row">
+                            <span class="result-label">Contribuição Sindical</span>
+                            <span class="result-value desconto-value" id="sindicato">R$ 77,75</span>
+                        </div>
+                        
+                        <div class="result-row">
+                            <span class="result-label">Imposto de Renda</span>
+                            <span class="result-value desconto-value" id="ir">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="result-row" style="border-top: 2px solid var(--danger); padding-top: 1rem;">
+                            <span class="result-label" style="font-weight: 700;">Total de Descontos</span>
+                            <span class="result-value" style="color: var(--danger); font-size: 1.3rem; font-weight: 700;" id="descontos-total">R$ 1.433,96</span>
+                        </div>
+                    </div>
+                    
+                    <div class="total-row category-total fade-in">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="total-label">SALÁRIO LÍQUIDO</div>
+                                <div style="font-size: 0.9rem; color: var(--gray-text); margin-top: 0.25rem;">
+                                    <span id="professor-type-display">Efetivo</span> 
+                                    <span id="ingresso-display">(2022 ou após)</span> | 
+                                    <span id="horas-trabalhadas">200</span> horas mensais
+                                    <span id="nivel-display"> | Nível 1</span>
+                                </div>
+                            </div>
+                            <div class="total-value" id="salario-liquido">R$ 7.837,82</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <h3><i class="fas fa-info-circle"></i> Como é Calculado o Salário Líquido</h3>
+            
+            <div class="explanation-grid">
+                <div class="formula-box" id="efetivo-2022-explanation">
+                    <h4><i class="fas fa-user-check"></i> Efetivo (2022 ou após)</h4>
+                    <p><strong>Vantagens:</strong> Valor Base + Regência (14,5%) + ADI</p>
+                    <p><strong>Descontos:</strong> IPM PREVIFOR (14% com teto) + FORTALEZA SAÚDE (2%) + Contribuição Sindical + IR</p>
+                </div>
+                
+                <div class="formula-box" id="efetivo-antes-2022-explanation">
+                    <h4><i class="fas fa-user-check"></i> Efetivo (antes de 2022)</h4>
+                    <p><strong>Vantagens:</strong> Valor Base + Regência + ADI + Anuênio (1% por ano)</p>
+                    <p><strong>Descontos:</strong> IPM PREVIFOR (14% com teto, inclui anuênio) + FORTALEZA SAÚDE (2%, inclui anuênio) + Contribuição Sindical + IR</p>
+                </div>
+                
+                <div class="formula-box" id="substituto-explanation">
+                    <h4><i class="fas fa-user-clock"></i> Professor Substituto</h4>
+                    <p><strong>Vantagens:</strong> Valor Base (Graduação com regência inclusa) + ADI</p>
+                    <p><strong>Descontos:</strong> INSS Progressivo + Contribuição Sindical + IR</p>
+                    <div class="formula">
+                        INSS Progressivo (2026):<br>
+                        1ª faixa: 7,5% até R$ 1.621,00<br>
+                        2ª faixa: 9% até R$ 2.902,84<br>
+                        3ª faixa: 12% até R$ 4.354,27<br>
+                        4ª faixa: 14% até R$ 8.475,55
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2026 Calculadora de Salário Líquido - Professores da Prefeitura Municipal de Fortaleza</p>
+            <p class="footer-note">
+                Esta calculadora é fornecida para fins informativos. Os valores podem variar conforme a legislação.
+                Consulte sempre os documentos oficiais para informações precisas.
+            </p>
+            <p class="footer-note">
+                Valor do ADI: R$ 18,48 por dia | Teto PREVIFOR: R$ 1.186,58 | Substituto: somente Graduação
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Valores base para 200 horas (sem regência)
+        const valoresBase200h = {
+            "5144.12": 5144.12,  // Ensino Médio
+            "6231.34": 6231.34,  // Graduação
+            "7774.83": 7774.83,  // Especialização
+            "9369.92": 9369.92,  // Mestrado
+            "10893.88": 10893.88 // Doutorado
+        };
+        
+        // Valor base para substitutos (Graduação com regência já incluída)
+        const VALOR_SUBSTITUTO_BASE = 6231.34; // Valor base graduação
+        const VALOR_SUBSTITUTO_TOTAL = 6231.34 * 1.145; // Com 14,5% de regência
+        
+        // Valor do ADI por dia
+        const VALOR_ADI = 18.48;
+        
+        // Teto da PREVIFOR
+        const TETO_PREVIDENCIA = 1186.58;
+        
+        // Faixas do INSS 2026
+        const FAIXAS_INSS = [
+            { limite: 1621.00, aliquota: 0.075, deducao: 0.00 },
+            { limite: 2902.84, aliquota: 0.09, deducao: 23.66 },
+            { limite: 4354.27, aliquota: 0.12, deducao: 110.75 },
+            { limite: 8475.55, aliquota: 0.14, deducao: 197.73 }
+        ];
+        
+        // Variáveis globais
+        let tipoProfessor = 'efetivo';
+        let anoIngresso = '2022';
+        
+        // Função para formatar valores em reais
+        function formatarMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2
+            }).format(valor);
+        }
+        
+        // Função para validar entrada
+        function validarEntrada() {
+            const nivelInput = document.getElementById('nivel');
+            const nivelError = document.getElementById('nivel-error');
+            const nivel = parseInt(nivelInput.value);
+            const horas = parseInt(document.getElementById('horas').value);
+            
+            let isValid = true;
+            
+            // Validar nível (apenas para efetivos)
+            if (tipoProfessor === 'efetivo') {
+                if (isNaN(nivel) || nivel < 1 || nivel > 32) {
+                    nivelError.style.display = 'block';
+                    nivelInput.style.borderColor = 'var(--danger)';
+                    isValid = false;
+                } else {
+                    nivelError.style.display = 'none';
+                    nivelInput.style.borderColor = '#444';
+                }
+            }
+            
+            // Validar horas
+            if (horas < 1 || horas > 400) {
+                alert('Por favor, insira um valor entre 1 e 400 horas.');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Função para calcular INSS progressivo
+        function calcularINSSProgressivo(salario) {
+            let inss = 0;
+            let salarioRestante = salario;
+            
+            for (let i = 0; i < FAIXAS_INSS.length; i++) {
+                const faixa = FAIXAS_INSS[i];
+                const faixaAnterior = i > 0 ? FAIXAS_INSS[i-1] : { limite: 0 };
+                
+                if (salarioRestante <= 0) break;
+                
+                const baseCalculo = Math.min(
+                    salarioRestante,
+                    faixa.limite - (faixaAnterior.limite || 0)
+                );
+                
+                if (baseCalculo > 0) {
+                    inss += baseCalculo * faixa.aliquota;
+                    salarioRestante -= baseCalculo;
+                }
+            }
+            
+            return inss;
+        }
+        
+        // Função para alternar ano de ingresso
+        function alternarAnoIngresso(ano) {
+            anoIngresso = ano;
+            
+            // Atualizar botões de seleção
+            document.querySelectorAll('.ingresso-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.ingresso === ano) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Mostrar/ocultar campo de anuênio
+            const anuenioGroup = document.getElementById('anuenio-group');
+            if (ano === 'antes-2022') {
+                anuenioGroup.classList.remove('hidden');
+            } else {
+                anuenioGroup.classList.add('hidden');
+            }
+            
+            // Atualizar texto de ingresso
+            document.getElementById('ingresso-display').textContent = ano === '2022' ? '(2022 ou após)' : '(antes de 2022)';
+            
+            // Mostrar/ocultar explicações
+            document.getElementById('efetivo-2022-explanation').style.display = ano === '2022' ? 'block' : 'none';
+            document.getElementById('efetivo-antes-2022-explanation').style.display = ano === 'antes-2022' ? 'block' : 'none';
+            
+            // Recalcular
+            calcularSalario();
+        }
+        
+        // Função para alternar entre efetivo e substituto
+        function alternarTipoProfessor(tipo) {
+            tipoProfessor = tipo;
+            
+            // Atualizar botões de seleção
+            document.querySelectorAll('.type-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.type === tipo) {
+                    option.classList.add('active');
+                }
+            });
+            
+            // Mostrar/ocultar seletor de ano de ingresso
+            const ingressoGroup = document.getElementById('ingresso-group');
+            if (tipo === 'efetivo') {
+                ingressoGroup.classList.remove('hidden');
+                document.getElementById('nivel-group').style.display = 'block';
+            } else {
+                ingressoGroup.classList.add('hidden');
+                document.getElementById('nivel-group').style.display = 'none';
+            }
+            
+            // Mostrar/ocultar nota de restrição
+            const restricao = document.getElementById('substituto-restricao');
+            if (tipo === 'substituto') {
+                restricao.classList.remove('hidden');
+                
+                // Mudar opções do select para somente Graduação
+                const select = document.getElementById('qualificacao');
+                select.innerHTML = `
+                    <option value="graduacao_substituto">Graduação - R$ 7.134,88 (200h)</option>
+                `;
+                
+                // Mostrar tabela de substitutos
+                document.getElementById('tabela-efetivos').classList.add('hidden');
+                document.getElementById('tabela-substitutos').classList.remove('hidden');
+                
+                // Ocultar campo de anuênio
+                document.getElementById('anuenio-group').classList.add('hidden');
+            } else {
+                restricao.classList.add('hidden');
+                
+                // Restaurar opções do select para efetivos
+                const select = document.getElementById('qualificacao');
+                select.innerHTML = `
+                    <option value="5144.12">Ensino Médio - R$ 5.144,12 (200h)</option>
+                    <option value="6231.34">Graduação - R$ 6.231,34 (200h)</option>
+                    <option value="7774.83" selected>Especialização - R$ 7.774,83 (200h)</option>
+                    <option value="9369.92">Mestrado - R$ 9.369,92 (200h)</option>
+                    <option value="10893.88">Doutorado - R$ 10.893,88 (200h)</option>
+                `;
+                
+                // Mostrar tabela de efetivos
+                document.getElementById('tabela-efetivos').classList.remove('hidden');
+                document.getElementById('tabela-substitutos').classList.add('hidden');
+                
+                // Mostrar/ocultar campo de anuênio conforme ano de ingresso
+                if (anoIngresso === 'antes-2022') {
+                    document.getElementById('anuenio-group').classList.remove('hidden');
+                }
+            }
+            
+            // Atualizar interface de resultados
+            atualizarInterfaceTipo();
+            
+            // Recalcular
+            calcularSalario();
+            atualizarPreviewHoras();
+        }
+        
+        // Função para atualizar interface baseada no tipo
+        function atualizarInterfaceTipo() {
+            const isEfetivo = tipoProfessor === 'efetivo';
+            const isAntes2022 = isEfetivo && anoIngresso === 'antes-2022';
+            
+            // Mostrar/ocultar elementos na interface
+            document.getElementById('regencia-row').style.display = isEfetivo ? 'flex' : 'none';
+            document.getElementById('previdencia-row').style.display = isEfetivo ? 'flex' : 'none';
+            document.getElementById('saude-row').style.display = isEfetivo ? 'flex' : 'none';
+            document.getElementById('inss-row').style.display = isEfetivo ? 'none' : 'flex';
+            
+            // Mostrar/ocultar anuênio
+            document.getElementById('anuenio-row').style.display = isAntes2022 ? 'flex' : 'none';
+            
+            // Atualizar explicações
+            document.getElementById('efetivo-2022-explanation').style.display = (isEfetivo && anoIngresso === '2022') ? 'block' : 'none';
+            document.getElementById('efetivo-antes-2022-explanation').style.display = (isEfetivo && anoIngresso === 'antes-2022') ? 'block' : 'none';
+            document.getElementById('substituto-explanation').style.display = !isEfetivo ? 'block' : 'none';
+            
+            // Atualizar texto de tipo
+            document.getElementById('professor-type-display').textContent = isEfetivo ? 'Efetivo' : 'Substituto';
+            document.getElementById('nivel-display').style.display = isEfetivo ? 'inline' : 'none';
+        }
+        
+        // Função para atualizar preview das horas
+        function atualizarPreviewHoras() {
+            const horas = parseInt(document.getElementById('horas').value);
+            let valorBaseProporcional = 0;
+            
+            if (tipoProfessor === 'efetivo') {
+                const valorBase200h = parseFloat(document.getElementById('qualificacao').value);
+                valorBaseProporcional = valorBase200h * (horas / 200);
+            } else {
+                // Para substitutos, usamos o valor fixo da graduação com regência
+                valorBaseProporcional = VALOR_SUBSTITUTO_TOTAL * (horas / 200);
+            }
+            
+            const preview = document.getElementById('horas-preview');
+            if (horas !== 200) {
+                preview.innerHTML = `
+                    <strong>Proporção:</strong> ${horas}h = ${((horas/200)*100).toFixed(1)}% de 200h<br>
+                    <strong>Valor base ajustado:</strong> ${formatarMoeda(valorBaseProporcional)}
+                `;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        
+        // Função principal de cálculo
+        function calcularSalario() {
+            // Validar entrada
+            if (!validarEntrada()) {
+                return;
+            }
+            
+            // Obter valores dos inputs
+            const horas = parseInt(document.getElementById('horas').value);
+            const nivel = parseInt(document.getElementById('nivel').value);
+            const diasAdi = parseInt(document.getElementById('adi').value);
+            const anuenioAnos = tipoProfessor === 'efetivo' && anoIngresso === 'antes-2022' 
+                ? parseInt(document.getElementById('anuenio').value) 
+                : 0;
+            const sindicalizado = document.querySelector('input[name="sindicato"]:checked').value === 'sim';
+            
+            // Calcular proporção das horas
+            const proporcaoHoras = horas / 200;
+            
+            let valorBase = 0;
+            let regencia = 0;
+            let anuenio = 0;
+            
+            if (tipoProfessor === 'efetivo') {
+                // Para efetivos: cálculo normal
+                const valorBase200h = parseFloat(document.getElementById('qualificacao').value);
+                valorBase = valorBase200h * proporcaoHoras;
+                
+                // Aplicar aumento por nível
+                for (let i = 2; i <= nivel; i++) {
+                    valorBase *= 1.02;
+                }
+                
+                // Calcular regência separadamente
+                regencia = valorBase * 0.145;
+                
+                // Calcular anuênio (apenas para antes de 2022)
+                if (anoIngresso === 'antes-2022') {
+                    anuenio = valorBase * (anuenioAnos * 0.01);
+                }
+            } else {
+                // Para substitutos: somente graduação com regência já inclusa
+                valorBase = VALOR_SUBSTITUTO_TOTAL * proporcaoHoras;
+                // A regência já está incluída no valor base para substitutos
+                regencia = 0;
+            }
+            
+            // Calcular ADI
+            const valorAdi = diasAdi * VALOR_ADI;
+            
+            // Calcular vantagens totais
+            const vantagens = valorBase + regencia + anuenio + valorAdi;
+            
+            // Calcular base para descontos (inclui anuênio para efetivos antes de 2022)
+            const baseParaDescontos = valorBase + regencia + anuenio;
+            
+            // Calcular descontos conforme tipo de professor
+            
+            let inss = 0;
+            let previdencia = 0;
+            let saude = 0;
+            
+            if (tipoProfessor === 'efetivo') {
+                // a) IPM PREVIFOR - PRE (14% com teto) - inclui anuênio na base
+                previdencia = baseParaDescontos * 0.14;
+                if (previdencia > TETO_PREVIDENCIA) {
+                    previdencia = TETO_PREVIDENCIA;
+                }
+                
+                // b) FORTALEZA SAÚDE (2%) - inclui anuênio na base
+                saude = baseParaDescontos * 0.02;
+            } else {
+                // c) INSS Progressivo (para substitutos)
+                inss = calcularINSSProgressivo(valorBase); // INSS calculado sobre o valor base (já com regência inclusa)
+            }
+            
+            // d) CONTRIBUIÇÃO SINDICAL (1% do valor base, se sindicalizado)
+            const contribuicaoSindical = sindicalizado ? valorBase * 0.01 : 0;
+            
+            // e) IMPOSTO DE RENDA
+            // Para substitutos: Base = Valor Base (já com regência) - INSS
+            // Para efetivos: Base = Valor Base + Regência + Anuênio - PREVIFOR
+            const valoresTributaveis = tipoProfessor === 'efetivo' 
+                ? baseParaDescontos - previdencia 
+                : valorBase - inss;
+            
+            const baseParaIR = tipoProfessor === 'efetivo' ? baseParaDescontos : valorBase;
+            let impostoRenda = 0;
+            
+            if (baseParaIR <= 5000) {
+                // Isento
+                impostoRenda = 0;
+            } 
+            else if (baseParaIR > 5000 && baseParaIR <= 7350) {
+                // Fórmula: 27,5% dos Valores Tributáveis - 908,73 - [R$ 978,62 – (0,133145 × (Valor Base + Regência))]
+                const parte1 = (valoresTributaveis * 0.275) - 908.73;
+                const parte2 = 978.62 - (0.133145 * baseParaIR);
+                impostoRenda = parte1 - parte2;
+            } 
+            else if (baseParaIR > 7350) {
+                // Fórmula: 27,5% dos Valores Tributáveis - 908,73
+                impostoRenda = (valoresTributaveis * 0.275) - 908.73;
+            }
+            
+            // Garantir que o IR não seja negativo
+            if (impostoRenda < 0) {
+                impostoRenda = 0;
+            }
+            
+            // Calcular total de descontos
+            const descontosTotal = (tipoProfessor === 'efetivo' ? previdencia + saude : inss) + contribuicaoSindical + impostoRenda;
+            
+            // Calcular salário líquido
+            const salarioLiquido = vantagens - descontosTotal;
+            
+            // Atualizar interface
+            atualizarInterface(valorBase, regencia, anuenio, diasAdi, valorAdi, vantagens, previdencia, saude, inss, contribuicaoSindical, impostoRenda, descontosTotal, salarioLiquido, nivel, horas, anuenioAnos);
+        }
+        
+        // Função para atualizar a interface
+        function atualizarInterface(valorBase, regencia, anuenio, diasAdi, valorAdi, vantagens, previdencia, saude, inss, sindicato, ir, descontosTotal, salarioLiquido, nivel, horas, anuenioAnos) {
+            document.getElementById('nivel-display').textContent = tipoProfessor === 'efetivo' ? ` | Nível ${nivel}` : '';
+            document.getElementById('horas-trabalhadas').textContent = horas;
+            document.getElementById('dias-adi').textContent = diasAdi;
+            
+            // Atualizar anos de anuênio se aplicável
+            if (tipoProfessor === 'efetivo' && anoIngresso === 'antes-2022') {
+                document.getElementById('anuenio-anos').textContent = anuenioAnos;
+                document.getElementById('anuenio-valor').textContent = formatarMoeda(anuenio);
+            }
+            
+            document.getElementById('valor-base').textContent = formatarMoeda(valorBase);
+            document.getElementById('regencia').textContent = formatarMoeda(regencia);
+            document.getElementById('adi-valor').textContent = formatarMoeda(valorAdi);
+            document.getElementById('vantagens-total').textContent = formatarMoeda(vantagens);
+            document.getElementById('previdencia').textContent = formatarMoeda(previdencia);
+            document.getElementById('saude').textContent = formatarMoeda(saude);
+            document.getElementById('inss').textContent = formatarMoeda(inss);
+            document.getElementById('sindicato').textContent = formatarMoeda(sindicato);
+            document.getElementById('ir').textContent = formatarMoeda(ir);
+            document.getElementById('descontos-total').textContent = formatarMoeda(descontosTotal);
+            document.getElementById('salario-liquido').textContent = formatarMoeda(salarioLiquido);
+            
+            // Adicionar efeito visual
+            document.querySelector('.total-row').classList.add('fade-in');
+            setTimeout(() => {
+                document.querySelector('.total-row').classList.remove('fade-in');
+            }, 500);
+        }
+        
+        // Inicializar calculadora
+        window.onload = function() {
+            // Configurar eventos para alternar tipo de professor
+            document.querySelectorAll('.type-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    alternarTipoProfessor(this.dataset.type);
+                });
+            });
+            
+            // Configurar eventos para alternar ano de ingresso
+            document.querySelectorAll('.ingresso-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    alternarAnoIngresso(this.dataset.ingresso);
+                });
+            });
+            
+            // Configurar eventos para recalcular quando anuênio muda
+            document.getElementById('anuenio').addEventListener('input', calcularSalario);
+            
+            // Calcular inicialmente
+            calcularSalario();
+            
+            // Adicionar event listeners
+            document.getElementById('qualificacao').addEventListener('change', function() {
+                calcularSalario();
+                atualizarPreviewHoras();
+            });
+            
+            document.getElementById('horas').addEventListener('input', function() {
+                atualizarPreviewHoras();
+                calcularSalario();
+            });
+            
+            document.getElementById('nivel').addEventListener('input', calcularSalario);
+            document.getElementById('adi').addEventListener('input', calcularSalario);
+            
+            document.querySelectorAll('input[name="sindicato"]').forEach(radio => {
+                radio.addEventListener('change', calcularSalario);
+            });
+            
+            // Inicializar preview das horas
+            atualizarPreviewHoras();
+            
+            // Inicializar interface do tipo
+            atualizarInterfaceTipo();
+        };
+    </script>
+</body>
+</html>
